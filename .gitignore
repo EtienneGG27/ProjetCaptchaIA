@@ -169,3 +169,13 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Black formatting file
+.pyproject.toml
+
+# Flake8 configuration
+.flake8
+
+# Pre-commit configuration
+.pre-commit-config.yaml
+
