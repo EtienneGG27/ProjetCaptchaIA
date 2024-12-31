@@ -15,12 +15,6 @@ prompt = (
     "Assurez-vous de bien distinguer les caractères : "
 )
 
-# Accéder à la variable CLE_OPENAI
-api_key = os.getenv("CLE_OPENAI")
-
-# Utiliser la clé API pour initialiser le client OpenAI
-client = OpenAI(api_key=api_key)
-
 
 # Function to encode the image
 def encode_image(image_path):
@@ -28,24 +22,31 @@ def encode_image(image_path):
         return base64.b64encode(image_file.read()).decode("utf-8")
 
 
-base64_image = encode_image("captcha1.png")
+def resoudreCaptchaGPT(model: str, image_path: str):
+    # Accéder à la variable CLE_OPENAI
+    api_key = os.getenv("CLE_OPENAI")
 
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-        {
-            "role": "user",
-            "content": [
-                {"type": "text", "text": prompt},
-                {
-                    "type": "image_url",
-                    "image_url": {"url": f"data:image/jpeg;base64," f"{base64_image}"},
-                },
-            ],
-        }
-    ],
-    max_tokens=300,
-)
+    # Utiliser la clé API pour initialiser le client OpenAI
+    client = OpenAI(api_key=api_key)
 
+    base64_image = encode_image("captcha1.png")
 
-print(response.choices[0])
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64," f"{base64_image}"
+                        },
+                    },
+                ],
+            }
+        ],
+        max_tokens=300,
+    )
+    return response.choices[0].message.content
