@@ -1,3 +1,4 @@
+from GEMINI import resoudreCaptchaGemini
 from OPENAI import resoudreCaptchaGPT
 
 # Prompt :
@@ -8,5 +9,6 @@ prompt = (
     "Assurez-vous de bien distinguer les caractères : "
 )
 
+print(resoudreCaptchaGemini("gemini-1.5-pro", "captcha1.png", prompt))
 
 print(resoudreCaptchaGPT("gpt-4o-mini", "captcha1.png", prompt))
