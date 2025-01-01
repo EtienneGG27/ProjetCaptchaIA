@@ -5,7 +5,6 @@ import numpy as np
 import pytesseract
 
 
-# Fonction pour prétraiter l'image
 def preprocess_image(image_path):
     # Charger l'image
     image = cv2.imread(image_path, cv2.IMREAD_COLOR)
@@ -33,7 +32,6 @@ def preprocess_image(image_path):
     return temp_path
 
 
-# Fonction pour résoudre le CAPTCHA
 def solve_captcha(image_path):
     # Prétraiter l'image
     temp_path = preprocess_image(image_path)
@@ -56,10 +54,10 @@ def solve_captcha(image_path):
 
 
 # Fonction pour tester plusieurs CAPTCHA
-def resoudreCaptchaPyTesseract(image_path):
+def resoudreCaptchaPyTesseract(captcha_path):
     try:
-        result = solve_captcha(image_path)
+        result = solve_captcha(captcha_path)
         return result
     except Exception as e:
-        print(f"Erreur pour {image_path}: {e}")
+        print(f"Erreur pour {captcha_path}: {e}")
         return ""

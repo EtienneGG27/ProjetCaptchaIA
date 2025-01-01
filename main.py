@@ -1,5 +1,9 @@
+from selenium import webdriver
+
 from EASYOCR import resoudreCaptchaEasyOcr
 from GEMINI import resoudreCaptchaGemini
+from HTTPREQUEST import (envoieValeurCaptchaEtRecupereResultatSelenium,
+                         telechargerCaptchaSelenium)
 from OPENAI import resoudreCaptchaGPT
 from PYTESSERACT import resoudreCaptchaPyTesseract
 
@@ -25,21 +29,52 @@ captchas = {
 
 captcha1 = "mnt/data/captcha1.png"
 
+
 if __name__ == "__main__":
+    url = "https://captcha.com/demos/features/captcha-demo.aspx"
+    captcha_path = "mnt/data/captchaDemo.jpg"
+
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    try:
+        telechargerCaptchaSelenium(driver, captcha_path)
+        print(f"CAPTCHA enregistré à : {captcha_path}")
+
+        # captcha_value = input("Veuillez entrer la réponse du CAPTCHA : ")
+        # captcha_value = resoudreCaptchaEasyOcr(captcha_path)
+        captcha_value = resoudreCaptchaGemini(
+            model="gemini-1.5-pro", captcha_path=captcha_path, prompt=prompt
+        )
+        print(f"Valeur du CAPTCHA détectée : {captcha_value}")
+
+        resultat = envoieValeurCaptchaEtRecupereResultatSelenium(driver, captcha_value)
+        print(f"Résultat retourné par la page : {resultat}")
+    finally:
+        driver.quit()
+
+
+def test_captcha():
     for captcha_path, solution in captchas.items():
-        print(solution + " : " + resoudreCaptchaEasyOcr(captcha_path))
+        print(solution + " : " + resoudreCaptchaEasyOcr(captcha_path=captcha_path))
 
     for captcha_path, solution in captchas.items():
-        print(solution + " : " + resoudreCaptchaPyTesseract(captcha_path))
+        print(solution + " : " + resoudreCaptchaPyTesseract(captcha_path=captcha_path))
 
     for captcha_path, solution in captchas.items():
         print(
             solution
             + " : "
-            + resoudreCaptchaGemini("gemini-1.5-pro", captcha_path, prompt)
+            + resoudreCaptchaGemini(
+                model="gemini-1.5-pro", captcha_path=captcha_path, prompt=prompt
+            )
         )
 
     for captcha_path, solution in captchas.items():
         print(
-            solution + " : " + resoudreCaptchaGPT("gpt-4o-mini", captcha_path, prompt)
+            solution
+            + " : "
+            + resoudreCaptchaGPT(
+                model="gpt-4o-mini", captcha_path=captcha_path, prompt=prompt
+            )
         )

@@ -14,14 +14,14 @@ def encode_image(image_path: str) -> str:
         return base64.b64encode(image_file.read()).decode("utf-8")
 
 
-def resoudreCaptchaGPT(model: str, image_path: str, prompt: str) -> str:
+def resoudreCaptchaGPT(model: str, captcha_path: str, prompt: str) -> str:
     # Accéder à la variable CLE_OPENAI
     api_key = os.getenv("CLE_OPENAI")
 
     # Utiliser la clé API pour initialiser le client OpenAI
     client = OpenAI(api_key=api_key)
 
-    base64_image = encode_image(image_path)
+    base64_image = encode_image(captcha_path)
 
     response = client.chat.completions.create(
         model=model,
