@@ -1,13 +1,9 @@
 repos:
+
   - repo: https://github.com/psf/black
-    rev: 23.9.1  # Assurez-vous d'utiliser la version souhaitée
+    rev: 23.9.1
     hooks:
       - id: black
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0  # Assurez-vous d'utiliser la version souhaitée
-    hooks:
-      - id: isort
 
   - repo: https://github.com/pycqa/flake8
     rev: 6.1.0

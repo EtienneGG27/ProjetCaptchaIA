@@ -2,8 +2,10 @@ from selenium import webdriver
 
 from EASYOCR import resoudreCaptchaEasyOcr
 from GEMINI import resoudreCaptchaGemini
-from HTTPREQUEST import (envoieValeurCaptchaEtRecupereResultatSelenium,
-                         telechargerCaptchaSelenium)
+from HTTPREQUEST import (
+    envoieValeurCaptchaEtRecupereResultatSelenium,
+    telechargerCaptchaSelenium,
+)
 from OPENAI import resoudreCaptchaGPT
 from PYTESSERACT import resoudreCaptchaPyTesseract
 
