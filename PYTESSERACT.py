@@ -59,7 +59,6 @@ def solve_captcha(image_path):
 def resoudreCaptchaPyTesseract(image_path):
     try:
         result = solve_captcha(image_path)
-        print(f"Résultat pour {image_path}: {result}")
         return result
     except Exception as e:
         print(f"Erreur pour {image_path}: {e}")

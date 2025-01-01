@@ -1,3 +1,4 @@
+from EASYOCR import resoudreCaptchaEasyOcr
 from GEMINI import resoudreCaptchaGemini
 from OPENAI import resoudreCaptchaGPT
 from PYTESSERACT import resoudreCaptchaPyTesseract
@@ -10,7 +11,10 @@ prompt = (
     "Assurez-vous de bien distinguer les caractères : "
 )
 
+captcha1 = "mnt/data/captcha1.png"
+
 if __name__ == "__main__":
-    print(resoudreCaptchaPyTesseract("mnt/data/captcha1.png"))
-    print(resoudreCaptchaGemini("gemini-1.5-pro", "mnt/data/captcha1.png", prompt))
-    print(resoudreCaptchaGPT("gpt-4o-mini", "mnt/data/captcha1.png", prompt))
+    print(resoudreCaptchaEasyOcr(captcha1))
+    print(resoudreCaptchaPyTesseract(captcha1))
+    print(resoudreCaptchaGemini("gemini-1.5-pro", captcha1, prompt))
+    print(resoudreCaptchaGPT("gpt-4o-mini", captcha1, prompt))
