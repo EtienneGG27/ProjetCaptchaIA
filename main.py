@@ -14,7 +14,7 @@ prompt = (
     "Voici un texte déformé issu d'un CAPTCHA. "
     "Veuillez me fournir le texte ou les chiffres exacts "
     "après avoir interprété l'image. "
-    "Assurez-vous de bien distinguer les caractères : "
+    "Assurez-vous de bien distinguer les caractères, et donner la réponse du captcha entre crochet [] : "
 )
 
 captchas = {
@@ -64,13 +64,16 @@ def test_captcha():
         print(solution + " : " + resoudreCaptchaPyTesseract(captcha_path=captcha_path))
 
     for captcha_path, solution in captchas.items():
-        print(
-            solution
-            + " : "
-            + resoudreCaptchaGemini(
-                model="gemini-1.5-pro", captcha_path=captcha_path, prompt=prompt
+        try:
+            print(
+                solution
+                + " : "
+                + resoudreCaptchaGemini(
+                    model="gemini-1.5-pro", captcha_path=captcha_path, prompt=prompt
+                )
             )
-        )
+        except Exception as e:
+            print(f"Erreur lors de la résolution du CAPTCHA : {e}")
 
     for captcha_path, solution in captchas.items():
         print(
@@ -80,3 +83,6 @@ def test_captcha():
                 model="gpt-4o-mini", captcha_path=captcha_path, prompt=prompt
             )
         )
+
+
+test_captcha()
