@@ -1,6 +1,9 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/git
 
+.env
+.venv
+
 # Black formatting file
 .pyproject.toml
 
