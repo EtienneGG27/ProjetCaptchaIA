@@ -8,50 +8,26 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
-# Fichiers de cookies
-netscape_cookies_file = "mnt/data/cookies.txt"  # Fichier Netscape exporté
-json_cookies_file = "mnt/data/cookies.json"  # Fichier JSON converti
 
-
-def convert_netscape_to_json(input_file, output_file):
+def save_cookies(driver, output_file):
     """
-    Convertit les cookies au format Netscape en JSON.
-    :param input_file: Fichier Netscape (cookies.txt)
-    :param output_file: Fichier JSON (cookies.json)
-    """
-    cookies = []
-    with open(input_file, "r") as file:
-        for line in file:
-            if line.startswith("#") or not line.strip():
-                continue  # Ignorer les lignes de commentaire ou vides
-
-            fields = line.strip().split("\t")
-            if len(fields) < 7:
-                continue  # S'assurer qu'il y a suffisamment de colonnes
-
-            cookie = {
-                "domain": fields[0],
-                "httpOnly": fields[1].upper() == "TRUE",
-                "path": fields[2],
-                "secure": fields[3].upper() == "TRUE",
-                "expiry": int(fields[4]),
-                "name": fields[5],
-                "value": fields[6],
-            }
-            cookies.append(cookie)
-
-    with open(output_file, "w") as json_file:
-        json.dump(cookies, json_file, indent=4)
-    print(f"Cookies convertis et enregistrés dans {output_file}")
-
-
-def load_cookies(driver, cookies_file):
-    """
-    Charge les cookies dans le navigateur Selenium.
+    Sauvegarde les cookies actuels du navigateur dans un fichier au format JSON.
     :param driver: Instance du navigateur Selenium
-    :param cookies_file: Fichier JSON contenant les cookies
+    :param output_file: Fichier JSON où sauvegarder les cookies
     """
-    with open(cookies_file, "r") as file:
+    cookies = driver.get_cookies()
+    with open(output_file, "w") as file:
+        json.dump(cookies, file, indent=4)
+    print(f"Cookies sauvegardés dans {output_file}")
+
+
+def load_cookies(driver, input_file):
+    """
+    Charge les cookies depuis un fichier JSON dans le navigateur.
+    :param driver: Instance du navigateur Selenium
+    :param input_file: Fichier JSON contenant les cookies
+    """
+    with open(input_file, "r") as file:
         cookies = json.load(file)
         for cookie in cookies:
             driver.add_cookie(cookie)
@@ -74,18 +50,18 @@ def simulate_mouse_movement(driver, element):
     print("Clic simulé avec mouvement réaliste.")
 
 
+# Fichiers de cookies
+cookies_file = "cookies.json"
+
 # Script principal
 try:
-    # Si le fichier JSON n'existe pas, convertir les cookies
-    if not os.path.exists(json_cookies_file):
-        convert_netscape_to_json(netscape_cookies_file, json_cookies_file)
-
     # Initialiser Selenium WebDriver avec options
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("--start-maximized")
     options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     )
 
     service = Service()
@@ -95,8 +71,13 @@ try:
     demo_url = "https://www.google.com/recaptcha/api2/demo"
     driver.get(demo_url)
 
+    # Si les cookies n'existent pas encore, les extraire et les sauvegarder
+    if not os.path.exists(cookies_file):
+        print("Extraction des cookies...")
+        save_cookies(driver, cookies_file)
+
     # Charger les cookies dans le navigateur
-    load_cookies(driver, json_cookies_file)
+    load_cookies(driver, cookies_file)
 
     # Rafraîchir la page pour appliquer les cookies
     driver.refresh()

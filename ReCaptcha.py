@@ -59,19 +59,12 @@ def load_cookies(driver, cookies_file):
 
 
 def simulate_mouse_movement(driver, element):
-    """
-    Simule un mouvement réaliste de la souris vers un élément.
-    :param driver: Instance du navigateur Selenium
-    :param element: Élément cible
-    """
     actions = ActionChains(driver)
     for _ in range(random.randint(3, 6)):
-        # Mouvement aléatoire autour de l'élément
         actions.move_to_element_with_offset(
             element, random.uniform(-50, 50), random.uniform(-50, 50)
         ).pause(random.uniform(0.1, 0.3))
     actions.move_to_element(element).pause(random.uniform(0.5, 1.0)).click().perform()
-    print("Clic simulé avec mouvement réaliste.")
 
 
 # Script principal

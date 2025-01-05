@@ -14,7 +14,7 @@ prompt = (
     "Voici un texte déformé issu d'un CAPTCHA. "
     "Veuillez me fournir le texte ou les chiffres exacts "
     "après avoir interprété l'image. "
-    "Assurez-vous de bien distinguer les caractères, et donner la réponse du captcha entre crochet [] : "
+    "Assurez-vous de bien distinguer les caractères : "
 )
 
 captchas = {
@@ -55,15 +55,14 @@ if __name__ == "__main__":
     finally:
         driver.quit()
 
-
-def test_captcha():
+    # Comparaison des méthodes de résolution des captcha avec les OCR et LLM
     for captcha_path, solution in captchas.items():
+        print("CAPTCHA : " + solution)
+        print("EASY OCR")
         print(solution + " : " + resoudreCaptchaEasyOcr(captcha_path=captcha_path))
-
-    for captcha_path, solution in captchas.items():
+        print("PYTESSERACT")
         print(solution + " : " + resoudreCaptchaPyTesseract(captcha_path=captcha_path))
-
-    for captcha_path, solution in captchas.items():
+        print("GEMINI")
         try:
             print(
                 solution
@@ -74,15 +73,14 @@ def test_captcha():
             )
         except Exception as e:
             print(f"Erreur lors de la résolution du CAPTCHA : {e}")
-
-    for captcha_path, solution in captchas.items():
-        print(
-            solution
-            + " : "
-            + resoudreCaptchaGPT(
-                model="gpt-4o-mini", captcha_path=captcha_path, prompt=prompt
+        print("GPT")
+        try:
+            print(
+                solution
+                + " : "
+                + resoudreCaptchaGPT(
+                    model="gpt-4o-mini", captcha_path=captcha_path, prompt=prompt
+                )
             )
-        )
-
-
-test_captcha()
+        except Exception as e:
+            print(f"Erreur lors de la résolution du CAPTCHA : {e}")
