@@ -11,8 +11,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-# Configuration de l'API OpenAI
-openai.api_key = os.getenv("CLE_OPENAI")  # Remplacez par votre clé API valide
+
+openai.api_key = os.getenv("CLE_OPENAI")
 
 
 def detect_image_type_with_openai(image_path):
@@ -194,9 +194,6 @@ def find_prompt(driver):
 
 
 def download_updated_images(driver, image_selector, folder="updated_images"):
-    """
-    Réutilise la méthode download_images pour télécharger les images mises à jour.
-    """
     print("Téléchargement des images mises à jour après le clic...")
     return download_images(driver, image_selector, folder)
 
@@ -204,9 +201,6 @@ def download_updated_images(driver, image_selector, folder="updated_images"):
 def process_captcha_cycle(
     driver, image_selector, prompt, is_clicked, clicked_indices=[]
 ):
-    """
-    Effectue un cycle complet : téléchargement, découpe (si nécessaire), analyse et clic sur les images pertinentes.
-    """
     print("Début du cycle de traitement du CAPTCHA...")
     relevant_indices = []
 
@@ -234,9 +228,6 @@ def process_captcha_cycle(
 
 
 def interact_with_captcha(driver):
-    """
-    Interagit avec le captcha en boucles jusqu'à résolution complète.
-    """
     print("Bascule vers l'iframe du reCAPTCHA...")
     iframe = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.XPATH, "//iframe[@title='reCAPTCHA']"))

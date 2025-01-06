@@ -53,7 +53,6 @@ def solve_captcha(image_path):
     return clean_text
 
 
-# Fonction pour tester plusieurs CAPTCHA
 def resoudreCaptchaPyTesseract(captcha_path):
     try:
         result = solve_captcha(captcha_path)

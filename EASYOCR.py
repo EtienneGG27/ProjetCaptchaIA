@@ -2,11 +2,6 @@ import easyocr
 
 
 def resoudreCaptchaEasyOcr(captcha_path: str) -> str:
-    """
-    Résoudre un CAPTCHA en utilisant EasyOCR sans prétraitement d'image.
-    Supprime l'image prétraitée à la fin.
-    """
-
     try:
         # Initialiser le lecteur EasyOCR
         reader = easyocr.Reader(["en"])

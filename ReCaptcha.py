@@ -14,20 +14,15 @@ json_cookies_file = "mnt/data/cookies.json"  # Fichier JSON converti
 
 
 def convert_netscape_to_json(input_file, output_file):
-    """
-    Convertit les cookies au format Netscape en JSON.
-    :param input_file: Fichier Netscape (cookies.txt)
-    :param output_file: Fichier JSON (cookies.json)
-    """
     cookies = []
     with open(input_file, "r") as file:
         for line in file:
             if line.startswith("#") or not line.strip():
-                continue  # Ignorer les lignes de commentaire ou vides
+                continue
 
             fields = line.strip().split("\t")
             if len(fields) < 7:
-                continue  # S'assurer qu'il y a suffisamment de colonnes
+                continue
 
             cookie = {
                 "domain": fields[0],
@@ -68,9 +63,7 @@ def simulate_mouse_movement(driver, element):
 
 
 def resolutionReCaptchaV2():
-    # Script principal
     try:
-        # Si le fichier JSON n'existe pas, convertir les cookies
         if not os.path.exists(json_cookies_file):
             convert_netscape_to_json(netscape_cookies_file, json_cookies_file)
 
