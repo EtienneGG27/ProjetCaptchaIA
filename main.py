@@ -8,6 +8,8 @@ from HTTPREQUEST import (
 )
 from OPENAI import resoudreCaptchaGPT
 from PYTESSERACT import resoudreCaptchaPyTesseract
+from ReCaptcha import resolutionReCaptchaV2
+from ReCaptchaImage import resolutionReCaptchaV2Image
 
 # Prompt :
 prompt = (
@@ -33,6 +35,9 @@ captcha1 = "mnt/data/captcha1.png"
 
 
 if __name__ == "__main__":
+    resolutionReCaptchaV2Image()
+    resolutionReCaptchaV2()
+
     url = "https://captcha.com/demos/features/captcha-demo.aspx"
     captcha_path = "mnt/data/captchaDemo.jpg"
 

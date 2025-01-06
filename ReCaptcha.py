@@ -67,61 +67,64 @@ def simulate_mouse_movement(driver, element):
     actions.move_to_element(element).pause(random.uniform(0.5, 1.0)).click().perform()
 
 
-# Script principal
-try:
-    # Si le fichier JSON n'existe pas, convertir les cookies
-    if not os.path.exists(json_cookies_file):
-        convert_netscape_to_json(netscape_cookies_file, json_cookies_file)
+def resolutionReCaptchaV2():
+    # Script principal
+    try:
+        # Si le fichier JSON n'existe pas, convertir les cookies
+        if not os.path.exists(json_cookies_file):
+            convert_netscape_to_json(netscape_cookies_file, json_cookies_file)
 
-    # Initialiser Selenium WebDriver avec options
-    options = webdriver.ChromeOptions()
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--start-maximized")
-    options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    )
+        # Initialiser Selenium WebDriver avec options
+        options = webdriver.ChromeOptions()
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("--start-maximized")
+        options.add_argument(
+            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        )
 
-    service = Service()
-    driver = webdriver.Chrome(service=service, options=options)
+        service = Service()
+        driver = webdriver.Chrome(service=service, options=options)
 
-    # Accéder au site Web cible
-    demo_url = "https://www.google.com/recaptcha/api2/demo"
-    driver.get(demo_url)
+        # Accéder au site Web cible
+        demo_url = "https://www.google.com/recaptcha/api2/demo"
+        driver.get(demo_url)
 
-    # Charger les cookies dans le navigateur
-    load_cookies(driver, json_cookies_file)
+        # Charger les cookies dans le navigateur
+        load_cookies(driver, json_cookies_file)
 
-    # Rafraîchir la page pour appliquer les cookies
-    driver.refresh()
-    time.sleep(random.uniform(2, 4))
+        # Rafraîchir la page pour appliquer les cookies
+        driver.refresh()
+        time.sleep(random.uniform(2, 4))
 
-    # Basculer dans l'iframe contenant le reCAPTCHA
-    iframe = driver.find_element(By.TAG_NAME, "iframe")
-    driver.switch_to.frame(iframe)
+        # Basculer dans l'iframe contenant le reCAPTCHA
+        iframe = driver.find_element(By.TAG_NAME, "iframe")
+        driver.switch_to.frame(iframe)
 
-    # Localiser la case reCAPTCHA
-    recaptcha_checkbox = driver.find_element(By.CLASS_NAME, "recaptcha-checkbox-border")
+        # Localiser la case reCAPTCHA
+        recaptcha_checkbox = driver.find_element(
+            By.CLASS_NAME, "recaptcha-checkbox-border"
+        )
 
-    # Simuler un mouvement réaliste de la souris et cliquer
-    simulate_mouse_movement(driver, recaptcha_checkbox)
+        # Simuler un mouvement réaliste de la souris et cliquer
+        simulate_mouse_movement(driver, recaptcha_checkbox)
 
-    # Revenir au contexte principal
-    driver.switch_to.default_content()
+        # Revenir au contexte principal
+        driver.switch_to.default_content()
 
-    # Localiser et cliquer sur le bouton "Afficher"
-    submit_button = driver.find_element(By.ID, "recaptcha-demo-submit")
-    simulate_mouse_movement(driver, submit_button)
+        # Localiser et cliquer sur le bouton "Afficher"
+        submit_button = driver.find_element(By.ID, "recaptcha-demo-submit")
+        simulate_mouse_movement(driver, submit_button)
 
-    print("Formulaire soumis avec succès.")
+        print("Formulaire soumis avec succès.")
 
-    # Pause pour observer
-    time.sleep(random.uniform(5, 7))
+        # Pause pour observer
+        time.sleep(random.uniform(5, 7))
 
-except Exception as e:
-    print(f"Une erreur est survenue : {e}")
+    except Exception as e:
+        print(f"Une erreur est survenue : {e}")
 
-finally:
-    # Fermer le navigateur
-    if "driver" in locals():
-        driver.quit()
+    finally:
+        # Fermer le navigateur
+        if "driver" in locals():
+            driver.quit()
