@@ -198,9 +198,7 @@ def download_updated_images(driver, image_selector, folder="updated_images"):
     return download_images(driver, image_selector, folder)
 
 
-def process_captcha_cycle(
-    driver, image_selector, prompt, is_clicked, clicked_indices=[]
-):
+def process_captcha_cycle(driver, image_selector, prompt):
     print("Début du cycle de traitement du CAPTCHA...")
     relevant_indices = []
 
@@ -251,9 +249,7 @@ def interact_with_captcha(driver):
     while True:
         prompt = find_prompt(driver)
         # Étape 1 : Effectuer un cycle complet
-        relevant_indices = process_captcha_cycle(
-            driver, tile_selector, prompt, is_clicked=False
-        )
+        relevant_indices = process_captcha_cycle(driver, tile_selector, prompt)
         selected_indices.update(relevant_indices)
 
         # Étape 2 : Valider ou re-télécharger les images mises à jour
@@ -274,8 +270,6 @@ def interact_with_captcha(driver):
                 driver,
                 tile_selector,
                 prompt,
-                is_clicked=True,
-                clicked_indices=list(selected_indices),
             )
             selected_indices.update(relevant_indices_after_click)
 
